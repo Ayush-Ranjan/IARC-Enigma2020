@@ -11,8 +11,9 @@
   
   int qtr1[8];
   int qtr2[8];
-  char str1[6];
-  char str2[6];
+  char str1[7];
+  char str2[7];
+  
 
   int en_left = 9;
   int leftPin_1 = 7;
@@ -50,7 +51,7 @@ void read_qtr_1 ()
      str1[j] = 'B';
     else
      str1[j] = 'W'; 
-   Serial.print(str1[j]);  
+   Serial.print(str1[j]);
    j++; 
   }
   Serial.print(" ");
@@ -61,7 +62,7 @@ void read_qtr_1 ()
    Serial.print(qtr1[i]);  
    Serial.print(" ");
   }
-  Serial.println();  
+  Serial.println(); 
 }
 
 void read_qtr_2 ()
@@ -182,7 +183,8 @@ void setup()
   analogWrite(9,150);
   analogWrite(5,150);
   Serial.begin(9600);
-  
+  str1[6] = '\0';
+  str2[6] = '\0'; 
 }
 
 void loop() {
@@ -195,12 +197,9 @@ void loop() {
  // reference2 = error(qtr2);    //position of black line on secondary sensor array
   
   //Reading first 1x2 node cell
-  Serial.println("str1 is ");
-  Serial.print(str1);
-  Serial.println();
-  if((strcmp(str1,"WWWWWW") == 0 ))//&& turn == false && obstacle == false) || strcmp(str1,"WBBBBW") == 0 ) //|| (abs(reference1) > 1 && abs(reference2) < 1)) 
+  if((strcmp(str1,"WWWWWW") == 0 ) && turn == false && obstacle == false || strcmp(str1,"WBBBBW") == 0  || (abs(reference1) > 1 && abs(reference2) < 1))
     {
-      Serial.print("Node detected 1x2");
+      Serial.println("Node detected 1x2");
       node = true;
 
   //store binary node values
@@ -229,10 +228,11 @@ void loop() {
 //Reading second 1x2 node cell
   if (node == true)
     {
+      Serial.print("Yo, we are in");
       if ((strcmp(str2,"WWWWWW") && turn == false && obstacle == false)|| strcmp(str2,"WBBBBW") == 0 || (abs(reference2) > 1 && abs(reference1) < 1))
         {
           
-          Serial.print("Node detected 2x2");
+          Serial.println("Node detected 2x2");
           
       //store binary node values
           if (strcmp(str2,"WWWWWW") == 0)
